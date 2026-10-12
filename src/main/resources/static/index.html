@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PhishGuard</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <h1>🛡️ PhishGuard</h1>
+    <button class="nav-btn active" data-page="dashboard">Dashboard</button>
+    <button class="nav-btn" data-page="scan">Scan URL</button>
+    <button class="nav-btn" data-page="history">Scan History</button>
+  </aside>
+
+  <main class="content">
+    <!-- ================= DASHBOARD ================= -->
+    <section id="page-dashboard" class="page active">
+      <h2>Dashboard</h2>
+      <div class="cards">
+        <div class="card"><span>Total Scans</span><strong id="statTotal">0</strong></div>
+        <div class="card low"><span>Low Risk</span><strong id="statLow">0</strong></div>
+        <div class="card medium"><span>Medium Risk</span><strong id="statMedium">0</strong></div>
+        <div class="card high"><span>High Risk</span><strong id="statHigh">0</strong></div>
+        <div class="card critical"><span>Critical Risk</span><strong id="statCritical">0</strong></div>
+      </div>
+      <div class="grid">
+        <div class="panel"><h3>Risk Distribution</h3><canvas id="riskChart"></canvas></div>
+        <div class="panel"><h3>Recent Scans</h3><div id="recentList"></div></div>
+        <div class="panel"><h3>Highest-Risk URLs</h3><div id="highestList"></div></div>
+      </div>
+    </section>
+
+    <!-- ================= SCAN ================= -->
+    <section id="page-scan" class="page">
+      <h2>Enter URL to analyze</h2>
+      <div class="scan-box">
+        <input type="text" id="urlInput" maxlength="2048" placeholder="https://example.com/login">
+        <button id="scanBtn">SCAN URL</button>
+      </div>
+      <p id="scanError" class="error"></p>
+
+      <div id="result" class="panel hidden">
+        <div class="score-row">
+          <div>Risk Score: <strong id="resScore"></strong></div>
+          <div>Risk Level: <span id="resLevel" class="badge"></span></div>
+        </div>
+        <p>Hostname: <code id="resHost"></code> &nbsp;|&nbsp; HTTPS: <strong id="resHttps"></strong></p>
+        <p>Scanned URL: <code id="resUrl"></code></p>
+        <h3>Detected Issues</h3>
+        <div id="resIssues"></div>
+        <p class="recommendation">💡 <span id="resRecommendation"></span></p>
+      </div>
+
+      <p class="disclaimer">
+        This tool provides a heuristic security assessment and cannot guarantee
+        that a URL is malicious or safe.
+      </p>
+    </section>
+
+    <!-- ================= HISTORY ================= -->
+    <section id="page-history" class="page">
+      <h2>Scan History</h2>
+      <div class="filters">
+        <input type="text" id="searchInput" placeholder="Search URL...">
+        <select id="levelFilter">
+          <option value="">All levels</option>
+          <option>LOW</option><option>MEDIUM</option><option>HIGH</option><option>CRITICAL</option>
+        </select>
+        <select id="sortSelect">
+          <option value="desc">Newest first</option>
+          <option value="asc">Oldest first</option>
+        </select>
+        <button id="clearBtn" class="danger">Delete All</button>
+      </div>
+      <table>
+        <thead><tr><th>URL</th><th>Score</th><th>Level</th><th>Date</th><th>Actions</th></tr></thead>
+        <tbody id="historyBody"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
